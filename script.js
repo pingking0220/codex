@@ -444,15 +444,13 @@ function buildGroupNumberPlan(groupCount, emptyGroup) {
     };
   }
 
-  const activeGroups = [];
+  const activeGroups = [emptyGroup];
   for (let groupNumber = 1; groupNumber <= TOTAL_GROUPS; groupNumber += 1) {
-    if (groupNumber === emptyGroup || activeGroups.length < groupCount) {
-      activeGroups.push(groupNumber);
-    }
-    if (activeGroups.length === groupCount + 1) {
-      break;
-    }
+    if (groupNumber === emptyGroup) continue;
+    if (activeGroups.length >= groupCount + 1) break;
+    activeGroups.push(groupNumber);
   }
+  activeGroups.sort((a, b) => a - b);
 
   if (!activeGroups.includes(emptyGroup) || activeGroups.length !== groupCount + 1) {
     return {
