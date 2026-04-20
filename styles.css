@@ -532,38 +532,6 @@ textarea {
   box-shadow: 0 10px 20px rgba(47, 125, 95, 0.16);
 }
 
-@media print {
-  body {
-    background: #fff;
-  }
-
-  .sidebar,
-  .topbar,
-  #groupSettings,
-  #rowSettings,
-  #messageBox,
-  #generateBtn,
-  #shuffleBtn,
-  #teacherViewBtn,
-  #printViewBtn {
-    display: none !important;
-  }
-
-  .layout {
-    grid-template-columns: 1fr;
-  }
-
-  .card {
-    box-shadow: none;
-    border: none;
-    padding: 0;
-  }
-
-  .seat-map {
-    min-height: auto;
-  }
-}
-
 .row-seat-layout {
   display: grid;
   gap: 14px;
@@ -651,5 +619,114 @@ textarea {
   .table-surface,
   .empty-table-body {
     min-height: 84px;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .sidebar,
+  .topbar,
+  #groupSettings,
+  #rowSettings,
+  #messageBox,
+  #generateBtn,
+  #shuffleBtn,
+  #teacherViewBtn,
+  #printViewBtn {
+    display: none !important;
+  }
+
+  .app-shell {
+    max-width: none;
+    padding: 0;
+  }
+
+  .layout {
+    display: block;
+  }
+
+  .panel,
+  .main-panel {
+    display: block;
+  }
+
+  .card {
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    background: #fff;
+  }
+
+  .section-title {
+    align-items: flex-start;
+  }
+
+  .seat-map {
+    min-height: auto;
+  }
+
+  .classroom-layout {
+    display: grid !important;
+    gap: 16px;
+  }
+
+  .seat-map.teacher-view .classroom-layout {
+    display: flex !important;
+    flex-direction: column-reverse;
+  }
+
+  .classroom-row {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 12px;
+  }
+
+  .group-seat-card,
+  .row-block {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 1px solid #d9e3dc;
+    padding: 12px;
+  }
+
+  .group-table-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 88px minmax(0, 1fr) !important;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .seat-column {
+    display: grid !important;
+    gap: 8px;
+  }
+
+  .table-surface,
+  .empty-table-body {
+    min-height: 210px;
+    padding: 10px;
+  }
+
+  .seat {
+    min-height: 58px;
+    padding: 8px;
+    font-size: 0.95rem;
+    cursor: default;
+    box-shadow: none;
+    outline: none;
+  }
+
+  .row-grid {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 8px;
   }
 }
