@@ -624,8 +624,8 @@ textarea {
 
 @media print {
   @page {
-    size: A4 portrait;
-    margin: 10mm;
+    size: A4 landscape;
+    margin: 8mm;
   }
 
   body {
@@ -686,7 +686,7 @@ textarea {
   .classroom-row {
     display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 12px;
+    gap: 10px;
   }
 
   .group-seat-card,
@@ -694,13 +694,13 @@ textarea {
     break-inside: avoid;
     page-break-inside: avoid;
     border: 1px solid #d9e3dc;
-    padding: 12px;
+    padding: 10px;
   }
 
   .group-table-layout {
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) 88px minmax(0, 1fr) !important;
-    gap: 10px;
+    grid-template-columns: minmax(54px, 1fr) 78px minmax(54px, 1fr) !important;
+    gap: 8px;
     align-items: center;
   }
 
@@ -711,14 +711,15 @@ textarea {
 
   .table-surface,
   .empty-table-body {
-    min-height: 210px;
-    padding: 10px;
+    min-height: 180px;
+    padding: 8px;
   }
 
   .seat {
-    min-height: 58px;
-    padding: 8px;
-    font-size: 0.95rem;
+    min-height: 52px;
+    padding: 6px 4px;
+    font-size: 0.88rem;
+    line-height: 1.25;
     cursor: default;
     box-shadow: none;
     outline: none;
