@@ -395,20 +395,12 @@ textarea {
 }
 
 .seat-map.teacher-view .classroom-layout {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.seat-map.teacher-view .classroom-row {
   direction: rtl;
-}
-
-.seat-map.teacher-view .row-grid {
-  direction: rtl;
-}
-
-.seat-map.teacher-view .teacher-desk {
-  transform: scaleX(-1);
-}
-
-.seat-map.teacher-view .teacher-desk > span {
-  display: inline-block;
-  transform: scaleX(-1);
 }
 
 .classroom-layout {
