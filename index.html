@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自然教室座位安排</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Nature Classroom</p>
+        <h1>自然教室座位安排</h1>
+      </div>
+      <div class="mode-switch" role="tablist" aria-label="座位模式切換">
+        <button id="groupModeBtn" class="mode-btn active" type="button">分組模式</button>
+        <button id="rowModeBtn" class="mode-btn" type="button">排列模式</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="panel sidebar">
+        <section class="card">
+          <div class="section-title">
+            <h2>班級存檔</h2>
+          </div>
+          <div class="student-form">
+            <label>
+              班級名稱
+              <input id="classNameInput" type="text" placeholder="例如：自然一甲">
+            </label>
+            <div class="form-actions">
+              <button id="saveClassBtn" type="button" class="primary-btn">儲存班級</button>
+              <button id="newClassBtn" type="button" class="ghost-btn">清空新班級</button>
+            </div>
+          </div>
+          <div class="saved-class-box">
+            <div class="section-title compact-title">
+              <h3>已存班級</h3>
+              <span id="savedClassCount" class="badge">0 筆</span>
+            </div>
+            <div id="savedClassList" class="saved-class-list"></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-title">
+            <h2>學生名單管理</h2>
+            <span id="studentCountBadge" class="badge">0 人</span>
+          </div>
+
+          <form id="studentForm" class="student-form">
+            <input id="studentId" type="hidden">
+            <label>
+              姓名
+              <input id="studentName" type="text" placeholder="請輸入學生姓名" required>
+            </label>
+            <label>
+              座號
+              <input id="studentNumber" type="number" min="1" placeholder="請輸入座號" required>
+            </label>
+            <label>
+              性別
+              <select id="studentGender" required>
+                <option value="male">男</option>
+                <option value="female">女</option>
+              </select>
+            </label>
+            <div class="form-actions">
+              <button type="submit" class="primary-btn">儲存學生</button>
+              <button id="cancelEditBtn" type="button" class="ghost-btn hidden">取消編輯</button>
+            </div>
+          </form>
+
+          <div class="import-box">
+            <div class="import-header">
+              <label for="csvFileInput" class="import-label">匯入學生名單</label>
+              <button id="fillSampleBtn" type="button" class="small-btn">帶入範例</button>
+            </div>
+            <input id="csvFileInput" type="file" accept=".csv,text/csv">
+            <p class="hint">可直接選擇 CSV 檔，系統會優先嘗試 UTF-8，並自動回退處理 Big5。</p>
+
+            <label for="csvTextInput" class="import-label inline-label">或直接貼上 CSV 內容</label>
+            <textarea
+              id="csvTextInput"
+              class="csv-textarea"
+              rows="7"
+              placeholder="座號,姓名,性別&#10;1,王小明,男&#10;2,林小美,女"
+            ></textarea>
+            <div class="form-actions">
+              <button id="importTextBtn" type="button" class="primary-btn">匯入貼上的名單</button>
+              <button id="clearTextBtn" type="button" class="ghost-btn">清空文字</button>
+            </div>
+
+            <div class="sample-box">
+              <p class="sample-title">CSV 格式範例</p>
+              <pre class="sample-code">座號,姓名,性別
+1,王小明,男
+2,林小美,女</pre>
+              <p class="hint">也接受 `number,name,gender`、`male/female`、Tab 分隔內容。</p>
+            </div>
+          </div>
+
+          <div id="studentList" class="student-list"></div>
+        </section>
+
+        <section class="card">
+          <div class="section-title">
+            <h2>使用說明</h2>
+          </div>
+          <ol class="help-list">
+            <li>先在左側新增學生，或匯入 CSV / 貼上名單。</li>
+            <li>在上方切換分組模式或排列模式。</li>
+            <li>依需求調整座位設定後，按「自動排座」。</li>
+            <li>若座位不足或男女人數不符，系統會顯示提示。</li>
+            <li>按「重新排列」可再次隨機安排。</li>
+          </ol>
+        </section>
+      </aside>
+
+      <section class="panel main-panel">
+        <section class="card">
+          <div class="section-title">
+            <h2>座位設定</h2>
+            <div class="toolbar">
+              <button id="generateBtn" class="primary-btn" type="button">自動排座</button>
+              <button id="shuffleBtn" class="ghost-btn" type="button">重新排列</button>
+            </div>
+          </div>
+
+          <div id="messageBox" class="message-box">請先輸入學生名單，再進行排座。</div>
+
+          <div id="groupSettings" class="settings-panel">
+            <div class="settings-grid">
+              <label>
+                使用組數
+                <select id="groupCountSelect"></select>
+              </label>
+              <label>
+                空下桌次
+                <select id="emptyGroupSelect">
+                  <option value="">不指定</option>
+                </select>
+              </label>
+            </div>
+            <div class="rule-box">
+              <p class="sample-title">目前分組排座規則</p>
+              <p class="hint">每組先以 2 男 2 女為基準，再依 6→5→4→3→2→1 的順序自動減少或增加人數。</p>
+            </div>
+            <div id="groupConfigList" class="group-config-list"></div>
+          </div>
+
+          <div id="rowSettings" class="settings-panel hidden">
+            <div class="settings-grid compact">
+              <div class="static-info">
+                <span>固定配置</span>
+                <strong>6 排 x 5 座位</strong>
+              </div>
+              <div class="static-info">
+                <span>總座位</span>
+                <strong>30 位</strong>
+              </div>
+            </div>
+            <p class="hint">系統會依學生清單自動安排到 6 排 5 座位內。</p>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-title">
+            <h2>座位圖</h2>
+            <div class="toolbar">
+              <div id="seatSummary" class="summary-text">尚未安排</div>
+              <button id="teacherViewBtn" class="ghost-btn" type="button">教師視角</button>
+              <button id="printViewBtn" class="ghost-btn" type="button">列印座位表</button>
+            </div>
+          </div>
+          <div id="seatMap" class="seat-map"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
